@@ -35,7 +35,7 @@ auswahl = st.sidebar.selectbox( #Navigation - steuert den Seiteninhalt
     ["Antrag erstellen", "Antrag anzeigen"])
 #Anzeige abhängig von der Auswahl
 if auswahl == "Antrag erstellen":
-    st.write("Hier kommt noch ein Formular")
+    st.write("Bitte User-ID eingeben und Request-Typ auswählen.")
 else:
     st.write("Hier kommt später eine Liste.")
 
@@ -54,7 +54,7 @@ system_1 = system_2 = system_3 = system_4 = False #boolean
 #Block 5 – Conditional UI (abhängig vom Request-Typ)
 if request_type == "Einzelberechtigung":#Logik und UI für Einzelberechtigungen
     st.write("Wähle nun das gewünschte System aus")
-    system = st.selectbox("System", ["SAP", "AD", "ServiceNow", "Email"])
+    system = st.selectbox("System", ["Bitte wählen...", "SAP", "AD", "ServiceNow", "Email"])#Bitte wählen ist Standard/Platzhalter
 
     if system == "SAP":#Zusatzoption aber nur wenn SAP ausgewählt worden ist
         st.write("System auswählen")
@@ -78,7 +78,7 @@ else:
             system_4 = st.checkbox("System_4")
 
 
-#Block 6 – Request Builder (Button + Text erstellen)
+#Block 6 – Request (Button + Text erstellen)
 button_geklickt = st.button("Request erstellen")#Triggert die Request Generierung
 
 if button_geklickt:
@@ -87,27 +87,44 @@ if button_geklickt:
     if user_id == "":
         st.warning("Bitte User-ID eingeben") #Schutz gegen leeres Pflichtfeld - Gelbe Warnmeldung
         st.session_state.request_ok = False #Erfolgsmeldung deaktivieren
-
+        
     else:
-
+       
         if request_type == "Einzelberechtigung": #seperater Flow - genau ein System
-            request_text += "Typ: Einzelberechtigung\n"
-            request_text += f"System: {system}\n"
 
-            if system == "SAP":
-                request_text += "SAP Systeme:\n"
-                if system_1:
-                    request_text += "- System_1\n"
-                if system_2:
-                    request_text += "- System_2\n"
-                if system_3:
-                    request_text += "- System_3\n"
-                if system_4:
-                    request_text += "- System_4\n"
+            if system == "Bitte wählen...":
+                 st.error("Bitte System auswählen")#Rote Meldung
+                 st.session_state.request_ok = False#Kein Erfolg
+                 st.session_state.request_text = ""#Optional den Text leeren
+                 st.stop()#Stop, hier stopt der Code
+            
+            else:
+                 request_text += "Typ: Einzelberechtigung\n"
+                 request_text += f"System: {system}\n"
+
+                 if system == "SAP":
+                    request_text += "SAP Systeme:\n"
+                    if system_1:
+                        request_text += "- System_1\n"
+                    if system_2:
+                        request_text += "- System_2\n"
+                    if system_3:
+                        request_text += "- System_3\n"
+                    if system_4:
+                        request_text += "- System_4\n"
+                    if not (system_1 or system_2 or system_3 or system_4):
+                         st.error("Bitte mindestens ein SAP-System auswählen")#Rote Meldung
+                         st.session_state.request_ok = False#Kein Erfolg
+                         st.stop()#Stop, hier stopt der Code             
 
         else:
             request_text += "Typ: Neuer User (Onboarding)\n" #onboarding Flow - mehrere Systeme gleichzeitig
             request_text += "Benötigte Systeme:\n"
+            if not(ad or mail or servicenow or sap):
+                 st.error("Bitte mindestens System auswählen")#Rote Meldung
+                 st.session_state.request_ok = False#Kein Erfolg
+                 st.session_state.request_text = ""#Optional den Text leeren
+                 st.stop()#Stop, hier stopt der Code
 
             if ad:
                 request_text += "- AD\n"
@@ -128,6 +145,10 @@ if button_geklickt:
                         request_text += "- System_3\n"
                 if system_4:
                     request_text += "- System_4\n"
+                if not (system_1 or system_2 or system_3 or system_4):
+                         st.error("Bitte mindestens ein SAP-System auswählen")#Rote Meldung
+                         st.session_state.request_ok = False#Kein Erfolg
+                         st.stop()#Stop, hier stopt der Code
 
         st.session_state.request_text = request_text #Speichert aktuell trotzdem, auch wenn keine ID hinterlegt ist - Muss noch gefixt werden!
         st.session_state.request_ok = True #Erfolgsmeldung aktivieren
