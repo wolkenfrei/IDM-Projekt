@@ -24,12 +24,12 @@ st.sidebar.title("Navigation")#Alles landet Links
 
 auswahl = st.sidebar.selectbox(#Variabel "auswahl"benannt die unter der Sidebar ein Drop down baut
     "Bitte auswählen",#Test über die Auswahl, die man treffen kann
-    ["Request erstellen", "Requests anzeigen"])#Auswahl möglichkeiten
+    ["Antrag erstellen", "Antrag anzeigen"])#Auswahl möglichkeiten
 
-if auswahl == "Request erstellen":
-    st.write("Hier kommt noch ein Formular")#Wenn in der Auswahl "Request erstellen" angeklickt wird, kommt die Meldung "hier kommt noch ein Formular"
+if auswahl == "Antrag erstellen":
+    st.write("Hier kommt noch ein Formular")#Wenn in der Auswahl "Antrag erstellen" angeklickt wird, kommt die Meldung "hier kommt noch ein Formular"
 else:
-    st.write("Hier kommt später eine Liste.")#Wenn was anderes als Request erstellen genommen wird, kommt die Meldung, dass später eine Liste angbezeigt wird
+    st.write("Hier kommt später eine Liste.")#Wenn was anderes als Antrag erstellen genommen wird, kommt die Meldung, dass später eine Liste angbezeigt wird
 
 #VARIABELN
 user_id = st.text_input("User-ID")#wir erzeugen nun ein Eingabefeld wo "User-ID" drin steht
@@ -37,7 +37,7 @@ request_type = st.selectbox("Request-Typ", ["Einzelberechtigung", "Neuer User (O
 system = None
 request_text = ""
 ad = mail = servicenow = sap = False
-p10 = hp1 = e10 = q10 = False
+system_1 = system_2 = system_3 = system_4 = False
 
 if request_type == "Einzelberechtigung":#Auswahlmöglichkeiten mit dem oberbegriff "System". Darunter dann die erstellte Liste mit neuen Werten
     st.write("Wähle nun das gewünschte System aus")
@@ -45,10 +45,10 @@ if request_type == "Einzelberechtigung":#Auswahlmöglichkeiten mit dem oberbegri
 
     if system == "SAP":#Wenn SAP ausgewählt wird, soll es die System anzeigen - Checkbox. Das gilt für die Einzelberechtigung
         st.write("System auswählen")
-        p10 = st.checkbox("P10")
-        hp1 = st.checkbox("HP1")
-        e10 = st.checkbox("E10")
-        q10 = st.checkbox("Q10")
+        system_1 = st.checkbox("System_1")
+        system_2 = st.checkbox("System_2")
+        system_3 = st.checkbox("System_3")
+        system_4 = st.checkbox("System_4")
     
 else:
     st.write("Neuer User - wähle die gewünschten Berechtigungen aus")#Das gilt für neue User (onboarding) - hier müssen die Berechtigungen einzeln angeklickt werden
@@ -59,10 +59,10 @@ else:
     sap = st.checkbox("SAP")#sobald man SAP auswählt, muss man die gewünschten Systeme auswählen.
     if sap:
         st.write("System auswählen")
-        p10 = st.checkbox("P10")
-        hp1 = st.checkbox("HP1")
-        e10 = st.checkbox("E10")
-        q10 = st.checkbox("Q10")
+        system_1 = st.checkbox("System_1")
+        system_2 = st.checkbox("System_2")
+        system_3 = st.checkbox("System_3")
+        system_4 = st.checkbox("System_4")
 
 button_geklickt = st.button("Request erstellen")#unter dem Eingabefeld erscheint über die Methode ein Button
 
@@ -74,15 +74,15 @@ if button_geklickt:
         request_text += f"System: {system}\n"
 
         if system == "SAP":
-             request_text += "SAP Rollen:\n"
-             if p10:
-                request_text += "- P10\n"
-             if hp1:
-                request_text += "- HP1\n"
-             if e10:
-                request_text += "- E10\n"
-             if q10:
-                request_text += "- Q10\n"
+             request_text += "SAP Systeme:\n"
+             if system_1:
+                request_text += "- System_1\n"
+             if system_2:
+                request_text += "- System_2\n"
+             if system_3:
+                request_text += "- System_3\n"
+             if system_4:
+                request_text += "- System_4\n"
 
     else:
         request_text += "Typ: Neuer User (Onboarding)\n"
@@ -99,14 +99,14 @@ if button_geklickt:
 
         if sap:
              request_text += "SAP Rollen:\n"
-             if p10: 
-                request_text += "- P10\n"
-             if hp1:
-                request_text += "- HP1\n"
-             if e10:
-                request_text += "- E10\n"
-             if q10:
-                request_text += "- Q10\n"
+             if system_1: 
+                request_text += "- System_1\n"
+             if system_2:
+                request_text += "- System_2\n"
+             if system_3:
+                request_text += "- System_3\n"
+             if system_4:
+                request_text += "- System_4\n"
 
     st.session_state.request_text = request_text
 
