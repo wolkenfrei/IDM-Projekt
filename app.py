@@ -8,17 +8,16 @@
 # streamlit run app.py
 
 
-
-
-
 #Block 0 – Imports
 import streamlit as st
 
 
 #Block 1 – Session State
+#Streamlit startet Script ständig neu (Rerun bei jeder Änderung)
 if "request_text" not in st.session_state:
     st.session_state.request_text = ""
-#Streamlit startet Script ständig neu (Rerun bei jeder Änderung)
+if "request_ok" not in st.session_state:
+     st.session_state.request_ok = False #Bei True = Erfolgsmeldung anzeigen, bei False = keine Erfolgsmeldung
 
 
 #Block 2 – Page Setup & Header
@@ -28,7 +27,7 @@ st.set_page_config(page_title="Wolkis Projekt", layout="wide")
 st.title("Wolkis")#Titel auf der Hauptseite
 st.write("IDM Lernprojekt")#Kurzbeschreibung
 st.sidebar.title("Navigation")#Überschrift der Sidebar
-
+st.sidebar.link_button("Projekt auf GitHub ansehen", "https://github.com/wolkenfrei/IDM-Projekt")#Verweis auf GitHub für weitere Informationen
 
 #Block 3 – Navigation
 auswahl = st.sidebar.selectbox( #Navigation - steuert den Seiteninhalt
@@ -41,7 +40,7 @@ else:
     st.write("Hier kommt später eine Liste.")
 
 
-#Block 4 – Inputs / Variablen (UI → Werte)
+#Block 4 – Inputs / Variablen (UI - Werte)
 user_id = st.text_input("User-ID")#Pflichtfeld der ID
 request_type = st.selectbox("Request-Typ", ["Einzelberechtigung", "Neuer User (Onboarding)"])#Logikpfad der Anwendung
 #Defaults verhindern NameError bei späteren Abfragen
@@ -86,7 +85,8 @@ if button_geklickt:
     request_text = f"User-ID: {user_id}\n" #Request Text wird nur beim Button Klick erzeugt
 
     if user_id == "":
-        st.warning("Bitte User-ID eingeben") #Schutz gegen leeres Pflichtfeld
+        st.warning("Bitte User-ID eingeben") #Schutz gegen leeres Pflichtfeld - Gelbe Warnmeldung
+        st.session_state.request_ok = False #Erfolgsmeldung deaktivieren
 
     else:
 
@@ -129,10 +129,13 @@ if button_geklickt:
                 if system_4:
                     request_text += "- System_4\n"
 
-    st.session_state.request_text = request_text #Speichert aktuell trotzdem, auch wenn keine ID hinterlegt ist - Muss noch gefixt werden!
-
+        st.session_state.request_text = request_text #Speichert aktuell trotzdem, auch wenn keine ID hinterlegt ist - Muss noch gefixt werden!
+        st.session_state.request_ok = True #Erfolgsmeldung aktivieren
 
 #Block 7 – Output (Anzeige)
+if st.session_state.request_ok: #Wird nur angezeigt, wenn letzter Klick erfolgreich war
+     st.success("Request erfolgreich erstellt") #Grüne Meldung im UI
 st.text_area("Request Text", st.session_state.request_text, height=200) #Hier wird der erstellte Request angezeigt
+
 
     
