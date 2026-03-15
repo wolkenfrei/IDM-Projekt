@@ -32,3 +32,23 @@ Vorteile:
 - keine CSS-Kenntnisse notwendig
 - schnelle Prototyp-Entwicklung
 - sofort sichtbare Ergebnisse
+
+----------------------------------------------------------------------------------------
+
+## Hinweis
+
+Dieses Projekt ist ein Lern- und Demonstrationsprojekt.
+
+Die Anwendung ist öffentlich erreichbar und enthält aktuell keine
+Benutzer-Authentifizierung oder Zugriffsbeschränkung.
+
+Ziel des Projekts ist es, typische IDM-Prozesse technisch zu verstehen
+und eine einfache Request-Erstellung mit Python und Streamlit umzusetzen.
+
+
+## Mögliche Erweiterungen
+
+- Benutzer-Authentifizierung (Login)
+- Rollenmodell (Admin / User)
+- Speicherung der Requests in einer Datenbank
+- Export der Requests (z.B. CSV oder PDF)
