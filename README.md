@@ -16,17 +16,19 @@ mit automatischer Erstellung eines sauberen Request-Texts.
 Ich arbeite im Support- und Operations-Umfeld mit Schwerpunkt Identity Management (IDM).  
 Ziel war ein praxisnahes Lernprojekt, um:
 
-- Python-Kenntnisse anzuwenden  
+- Python-Kenntnisse praktisch anzuwenden  
 - UI-Logik besser zu verstehen  
 - typische IDM-Prozesse nachzubilden  
+- ein eigenes Lernprojekt aufzubauen
 
 ---
 
 ## ⚙️ Warum Streamlit  
-Streamlit ermöglicht eine schnelle UI-Erstellung direkt in Python,  
-ohne zusätzliche HTML- oder CSS-Kenntnisse.
+Streamlit ermöglicht eine schnelle UI-Entwicklung direkt in Python.
 
 Vorteile:
 
-- sofort sichtbare Ergebnisse  
-- geringe Einstiegshürde
+- keine HTML-Kenntnisse notwendig
+- keine CSS-Kenntnisse notwendig
+- schnelle Prototyp-Entwicklung
+- sofort sichtbare Ergebnisse
