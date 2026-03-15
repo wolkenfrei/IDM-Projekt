@@ -28,10 +28,10 @@ if "request_ok" not in st.session_state:
 st.set_page_config(page_title="Wolkis Projekt", layout="wide")
 #Browser-Tab und nutzt die gesagte Seitenbreite
 
-st.title("Wolkis")#Titel auf der Hauptseite
-st.write("IDM Lernprojekt")#Kurzbeschreibung
-st.sidebar.title("Navigation")#Überschrift der Sidebar
-st.sidebar.link_button("Projekt auf GitHub ansehen", "https://github.com/wolkenfrei/IDM-Projekt")#Verweis auf GitHub für weitere Informationen
+st.sidebar.title("Wolkis IDM Lernprojekt") #Überschrift der Sidebar
+st.sidebar.link_button("Projekt auf GitHub ansehen", "https://github.com/wolkenfrei/IDM-Projekt\n") #Verweis auf GitHub für weitere Informationen
+st.sidebar.title("Navigation")
+
 
 
 #Block 3 – Navigation
@@ -95,7 +95,7 @@ if auswahl == "Antrag erstellen":
     if button_geklickt:
         request_id = random.randint(1000, 9999)  # Erzeugt eine zufällige Request-ID
         timestamp = datetime.now().strftime("%d.%m.%y - %H:%M Uhr")  # aktuelles Datum und Uhrzeit
-        request_text = f"Request-ID: {request_id}\nDatum: {timestamp}\nUser-ID: {user_id}\n"
+        request_text = f"Request-ID: {request_id}\nDatum: {timestamp}\n\nUser-ID: {user_id}\n"
 
         if user_id == "":
             st.warning("Bitte User-ID eingeben")  # Schutz gegen leeres Pflichtfeld - Gelbe Warnmeldung
@@ -173,7 +173,8 @@ if auswahl == "Antrag erstellen":
     #Block 7 – Output (Anzeige)
     if st.session_state.request_ok:  # Wird nur angezeigt, wenn letzter Klick erfolgreich war
         st.success("Request erfolgreich erstellt")  # Grüne Meldung im UI
-        st.text_area("Request Text", st.session_state.request_text, height=200)  # Hier wird der erstellte Request angezeigt
+        st.write("Erstellter Request")
+        st.text(st.session_state.request_text)  # Hier wird der erstellte Request angezeigt
 
 
 #Block 8 - Antrag unter "Antrag anzeigen"
@@ -183,7 +184,8 @@ else:
     if not st.session_state.requests:
         st.info("Es wurden noch keine Anträge erstellt.")  # Liste ist leer - nur der Hinweis
     else:
-        for request in st.session_state.requests:
-            st.text_area("Gespeicherter Antrag", request, height=200)  # Zeigt jeden Request an
-
+        for nummer, request in enumerate(st.session_state.requests, start=1):
+            st.write(f"Request: {nummer}") #Überschrift mit laufender Nummer
+            st.text(request)  # Zeigt jeden Request an
+            st.divider() #Trennt die einzelnen Anträge
 
