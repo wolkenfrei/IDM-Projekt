@@ -29,15 +29,15 @@ st.set_page_config(page_title="Wolkis Projekt", layout="wide")
 #Browser-Tab und nutzt die gesagte Seitenbreite
 
 st.sidebar.title("Wolkis IDM Lernprojekt") #Überschrift der Sidebar
-st.sidebar.link_button("Projekt auf GitHub ansehen", "https://github.com/wolkenfrei/IDM-Projekt\n") #Verweis auf GitHub für weitere Informationen
-st.sidebar.title("Navigation")
+st.sidebar.link_button("Projekt auf GitHub ansehen", "https://github.com/wolkenfrei/IDM-Projekt") #Verweis auf GitHub für weitere Informationen
+st.sidebar.subheader("Navigation")
 
 
 
 #Block 3 – Navigation
 auswahl = st.sidebar.selectbox(  # Navigation - steuert den Seiteninhalt
     "Bitte auswählen",
-    ["Antrag erstellen", "Antrag anzeigen"]
+    ["Antrag erstellen", "Antrag anzeigen", "Dashboard"]
 )
 
 # Anzeige abhängig von der Auswahl
@@ -59,7 +59,7 @@ if auswahl == "Antrag erstellen":
     ad = mail = servicenow = sap = False  # boolean
     system_1 = system_2 = system_3 = system_4 = False  # boolean
 
-    #Block 5 – Conditional UI (abhängig vom Request-Typ)
+#Block 5 – Conditional UI (abhängig vom Request-Typ)
     if request_type == "Einzelberechtigung":  # Logik und UI für Einzelberechtigungen
         st.write("Wähle nun das gewünschte System aus")
         system = st.selectbox(
@@ -89,7 +89,7 @@ if auswahl == "Antrag erstellen":
             system_3 = st.checkbox("System_3")
             system_4 = st.checkbox("System_4")
 
-    #Block 6 – Request (Button + Text erstellen)
+#Block 6 – Request (Button + Text erstellen)
     button_geklickt = st.button("Request erstellen")  # Triggert die Request Generierung
 
     if button_geklickt:
@@ -170,7 +170,7 @@ if auswahl == "Antrag erstellen":
         st.session_state.request_ok = True  # Erfolgsmeldung aktivieren
         st.session_state.requests.append(request_text)  # Fügt den fertigen Text zur Liste hinzu
 
-    #Block 7 – Output (Anzeige)
+#Block 7 – Output (Anzeige)
     if st.session_state.request_ok:  # Wird nur angezeigt, wenn letzter Klick erfolgreich war
         st.success("Request erfolgreich erstellt")  # Grüne Meldung im UI
         st.write("Erstellter Request")
@@ -178,14 +178,22 @@ if auswahl == "Antrag erstellen":
 
 
 #Block 8 - Antrag unter "Antrag anzeigen"
-else:
+elif auswahl == "Antrag anzeigen":
     st.write("Bisher erstellte Anträge")  # Bereich für die Request-Übersicht
 
     if not st.session_state.requests:
         st.info("Es wurden noch keine Anträge erstellt.")  # Liste ist leer - nur der Hinweis
     else:
-        for nummer, request in enumerate(st.session_state.requests, start=1):
-            st.write(f"Request: {nummer}") #Überschrift mit laufender Nummer
+        for index, request in enumerate(st.session_state.requests):
+            st.write(f"Request: {index + 1}") #Überschrift mit laufender Nummer
             st.text(request)  # Zeigt jeden Request an
+            if st.button("Löschen", key=f"delete_{index}"): #Löschbutton für jeden Request
+                del st.session_state.requests[index] #Löscht nur den ausgewählten Request
+                st.rerun() #Lädt die Seite neu
             st.divider() #Trennt die einzelnen Anträge
 
+#Block 9 - Dashboard Anzeige für derzeitige Requests
+elif auswahl == "Dashboard":
+    st.title("Dashboard")
+    total_requests = len(st.session_state.requests)
+    st.metric("Requests gesamt", total_requests)
